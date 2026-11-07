@@ -56,7 +56,7 @@
 <script src="https://cdn.jsdelivr.net/npm/lil-gui@0.19.2/dist/lil-gui.umd.min.js"></script>
 <script>
 
-//Name
+
 const HER_NAME = "";
 
 const NAME = HER_NAME.trim() || "My Love";
@@ -192,7 +192,7 @@ const words = [
   }
 ];
 
-// Shown after 
+// Shown after she taps YES
 const yesCard = {
   e:'🥳',
   title:'She Said Yes!',
@@ -254,8 +254,6 @@ if(window.lil){
 }
 
 
-// CLICK / HOVER
-
 const ray = new THREE.Raycaster(), mouse = new THREE.Vector2();
 const tip = document.getElementById('tip');
 let hovered = null, down = null, cardOpen = false, started = false, currentWord = null;
@@ -284,8 +282,6 @@ canvas.addEventListener('pointerup', e=>{
   if(h) openCard(h.userData.word, e.clientX, e.clientY);
 });
 
-
-// MESSAGE CARD
 
 const msg = document.getElementById('msg');
 
@@ -334,7 +330,6 @@ document.getElementById('closeBtn').onclick = ()=>{
 msg.addEventListener('click', e=>{ if(e.target===msg) closeCard(); });
 addEventListener('keydown', e=>{ if(e.key==='Escape') closeCard(); });
 
-
 let time = 0;
 function animate(){
   requestAnimationFrame(animate);
@@ -372,7 +367,6 @@ function animate(){
 }
 animate();
 
-// MUSIC
 
 let audioCtx, master, musicTimer, muted = false;
 const loveTrack = document.getElementById('loveTrack');
