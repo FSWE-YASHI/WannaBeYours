@@ -56,7 +56,7 @@
 <script src="https://cdn.jsdelivr.net/npm/lil-gui@0.19.2/dist/lil-gui.umd.min.js"></script>
 <script>
 
-// මෙතනට ඇයගේ නම ඇතුළත් කරන්න (උදා: "Kasuni")
+//Name
 const HER_NAME = "";
 
 const NAME = HER_NAME.trim() || "My Love";
@@ -150,7 +150,7 @@ function createHearts(){
 }
 createHearts();
 
-// Boy ➔ Girl Proposal Words
+
 const words = [
   {
     t:'I LOVE YOU, ' + NAME.toUpperCase(),
@@ -192,7 +192,7 @@ const words = [
   }
 ];
 
-// Shown after she taps YES
+// Shown after 
 const yesCard = {
   e:'🥳',
   title:'She Said Yes!',
@@ -200,9 +200,7 @@ const yesCard = {
   btn:"Forever 💞"
 };
 
-// ===================================
-// 3D TEXT SPRITES
-// ===================================
+
 const textSprites = [];
 
 function makeTextSprite(w){
@@ -227,9 +225,7 @@ function makeTextSprite(w){
 (document.fonts && document.fonts.load ? document.fonts.load('bold 40px Outfit') : Promise.resolve())
   .catch(()=>{}).then(()=>words.forEach(makeTextSprite));
 
-// ===================================
-// CONTROL PANEL (press H to hide/show)
-// ===================================
+
 if(window.lil){
   const gui = new lil.GUI({title:'🌌 Galaxy Control'});
   gui.close();
@@ -257,9 +253,9 @@ if(window.lil){
   addEventListener('keydown',e=>{ if(e.key.toLowerCase()==='h') gui._hidden ? gui.show() : gui.hide(); });
 }
 
-// ===================================
+
 // CLICK / HOVER
-// ===================================
+
 const ray = new THREE.Raycaster(), mouse = new THREE.Vector2();
 const tip = document.getElementById('tip');
 let hovered = null, down = null, cardOpen = false, started = false, currentWord = null;
@@ -288,9 +284,9 @@ canvas.addEventListener('pointerup', e=>{
   if(h) openCard(h.userData.word, e.clientX, e.clientY);
 });
 
-// ===================================
+
 // MESSAGE CARD
-// ===================================
+
 const msg = document.getElementById('msg');
 
 function floatHearts(count, x, y, spread){
@@ -338,9 +334,7 @@ document.getElementById('closeBtn').onclick = ()=>{
 msg.addEventListener('click', e=>{ if(e.target===msg) closeCard(); });
 addEventListener('keydown', e=>{ if(e.key==='Escape') closeCard(); });
 
-// ===================================
-// ANIMATION
-// ===================================
+
 let time = 0;
 function animate(){
   requestAnimationFrame(animate);
@@ -378,9 +372,8 @@ function animate(){
 }
 animate();
 
-// ===================================
 // MUSIC
-// ===================================
+
 let audioCtx, master, musicTimer, muted = false;
 const loveTrack = document.getElementById('loveTrack');
 const musicBtn = document.getElementById('musicBtn');
