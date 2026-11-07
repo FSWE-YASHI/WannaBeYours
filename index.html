@@ -20,7 +20,6 @@
   .card p{opacity:.85;font-size:15px;line-height:1.6;margin:12px 0}
   .btn{background:linear-gradient(90deg,#ff5a8f,#ff8fab);border:0;padding:11px 26px;border-radius:100px;color:#fff;font:700 15px 'Outfit',sans-serif;cursor:pointer;margin-top:8px;box-shadow:0 6px 20px rgba(255,90,143,.45)}
   .btn:active{transform:scale(.96)}
-  #help{position:fixed;left:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:5;background:rgba(0,0,0,.55);padding:10px 14px;border-radius:12px;font-size:12px;line-height:1.6;color:#ddd;max-width:230px}
   #tip{position:fixed;z-index:6;pointer-events:none;background:rgba(255,90,143,.9);padding:4px 10px;border-radius:99px;font-size:12px;transform:translate(14px,14px);display:none}
   .heartfx{position:fixed;z-index:11;pointer-events:none;font-size:22px;animation:rise 1.6s ease-out forwards}
   @keyframes rise{to{transform:translateY(-160px) scale(1.4);opacity:0}}
@@ -37,9 +36,9 @@
 <div class="overlay" id="intro">
   <div class="card">
     <div class="emoji">💖🌌</div>
-    <h1>My Love, I Have<br>Something to Ask…</h1>
-    <p>Scroll or pinch to zoom, drag to turn the universe, and tap the glowing words.</p>
-    <button class="btn" id="enterBtn">Start Universe ✨</button>
+    <h1 id="introTitle">My Love, I Have<br>Something to Ask…</h1>
+    <p>I made a little universe just for you. Drag to turn it, pinch or scroll to zoom, and tap the glowing words. ❤️</p>
+    <button class="btn" id="enterBtn">Enter Our Universe ✨</button>
   </div>
 </div>
 
@@ -52,11 +51,22 @@
   </div>
 </div>
 
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lil-gui@0.19.2/dist/lil-gui.umd.min.js"></script>
 <script>
+
+// මෙතනට ඇයගේ නම ඇතුළත් කරන්න (උදා: "Kasuni")
+const HER_NAME = "";
+
+const NAME = HER_NAME.trim() || "My Love";
+
+if (HER_NAME.trim()) {
+  document.getElementById('introTitle').innerHTML =
+    NAME + ", I Have<br>Something to Ask…";
+  document.title = NAME + ", I Have Something to Ask";
+}
+
 const canvas = document.getElementById('canvas');
 const scene = new THREE.Scene();
 scene.fog = new THREE.Fog(0x050008, 25, 90);
@@ -67,7 +77,6 @@ renderer.setSize(innerWidth, innerHeight);
 renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 renderer.setClearColor('#050008');
 
-// Mouse / touch control: scroll or pinch to zoom, drag to rotate
 const controls = new THREE.OrbitControls(camera, canvas);
 controls.enableDamping = true;
 controls.dampingFactor = 0.06;
@@ -90,7 +99,7 @@ scene.add(new THREE.AmbientLight(0xffc0dd, 0.6));
 const pLight = new THREE.PointLight(0xff2a7a, 4, 60);
 scene.add(pLight);
 
-// Black hole core + ring
+// Black hole 
 const core = new THREE.Mesh(new THREE.SphereGeometry(0.6,32,32), new THREE.MeshBasicMaterial({color:0x000000}));
 scene.add(core);
 const ring = new THREE.Mesh(new THREE.RingGeometry(0.8,1.5,64), new THREE.MeshBasicMaterial({color:0xff2a7a, side:THREE.DoubleSide, transparent:true, opacity:0.8}));
@@ -109,7 +118,7 @@ scene.add(ring);
   scene.add(new THREE.Points(g, new THREE.PointsMaterial({color:0xffd6e5, size:0.35, transparent:true, opacity:0.7})));
 })();
 
-// Heart geometry (proper heart outline)
+// Hearts
 function createHeartGeo(s){
   const sh = new THREE.Shape();
   sh.moveTo(0, -1.2*s);
@@ -141,15 +150,59 @@ function createHearts(){
 }
 createHearts();
 
-// Clickable words: simple English + a cute message for each
+// Boy ➔ Girl Proposal Words
 const words = [
-  {t:'My Love, I LOVE YOU', e:'💗', title:'I Love You, My Love', text:'I really love you. Every star in this galaxy is a small reason why.'},
-  {t:'DO YOU LOVE ME?',      e:'💞', title:'Do You Love Me?', text:'My heart keeps asking this question. I hope your answer is the one I dream about.'},
-  {t:'YOU ARE MY WORLD',     e:'🌍', title:'You Are My World', text:'When I think of the future, I only see you in it. You make every day better.'},
-  {t:'BE MY GIRL',           e:'🌹', title:'Be My Girl', text:'I want to hold your hand, share your smiles, and stay with you on the hard days too.'},
-  {t:'ONLY YOU, ALWAYS',     e:'💍', title:'Only You, Always', text:'I do not need a whole galaxy. I only need you, today and forever.'},
-  {t:'WILL YOU BE MINE?',    e:'💌', title:'Will You Be Mine?', text:'I love you, My Love. If you love me too, say yes and make me the happiest person in the universe.', btn:'Yes, I love you too 💖'}
+  {
+    t:'I LOVE YOU, ' + NAME.toUpperCase(),
+    e:'💗',
+    title:'I Love You, ' + NAME,
+    text:"I don't always find the perfect words, but I want you to know how much you mean to me. Every star in this galaxy is a small reason why I love you."
+  },
+  {
+    t:'YOU ARE MY HAPPINESS',
+    e:'🥰',
+    title:'You Are My Happiness',
+    text:"Your smile is my favourite thing in the world. Even the smallest moments with you turn into my best memories. I am so lucky to know you."
+  },
+  {
+    t:'YOU ARE MY WORLD',
+    e:'🌍',
+    title:'You Are My World',
+    text:"When I think about my future, you are the one I see in it. You make every ordinary day feel better, and I never want to take that for granted."
+  },
+  {
+    t:'MY HAND IS YOURS',
+    e:'🤝',
+    title:'Stay By My Side',
+    text:"I want to hold your hand, laugh at silly things with you, back your dreams, and stay with you on the hard days too. I want us to grow together."
+  },
+  {
+    t:'ONLY YOU, ALWAYS',
+    e:'💍',
+    title:'Only You, Always',
+    text:"I don't need a perfect love story, just a real one with you. Through every smile and every challenge, I choose you."
+  },
+  {
+    t:'WILL YOU BE MY GIRL?',
+    e:'💌',
+    title:'One Little Question...',
+    text:"I have something to ask you, " + NAME + ". Will you be my girl and let me make beautiful memories with you? I promise to do my best to make you smile every single day.",
+    btn:"Yes, I'm yours 💖",
+    final:true
+  }
 ];
+
+// Shown after she taps YES
+const yesCard = {
+  e:'🥳',
+  title:'She Said Yes!',
+  text:"You just made me the happiest person in the whole universe. I love you, " + NAME + ". Forever starts now. 💞",
+  btn:"Forever 💞"
+};
+
+// ===================================
+// 3D TEXT SPRITES
+// ===================================
 const textSprites = [];
 
 function makeTextSprite(w){
@@ -174,7 +227,9 @@ function makeTextSprite(w){
 (document.fonts && document.fonts.load ? document.fonts.load('bold 40px Outfit') : Promise.resolve())
   .catch(()=>{}).then(()=>words.forEach(makeTextSprite));
 
-// Control panel
+// ===================================
+// CONTROL PANEL (press H to hide/show)
+// ===================================
 if(window.lil){
   const gui = new lil.GUI({title:'🌌 Galaxy Control'});
   gui.close();
@@ -202,10 +257,12 @@ if(window.lil){
   addEventListener('keydown',e=>{ if(e.key.toLowerCase()==='h') gui._hidden ? gui.show() : gui.hide(); });
 }
 
-// Click / hover on words
+// ===================================
+// CLICK / HOVER
+// ===================================
 const ray = new THREE.Raycaster(), mouse = new THREE.Vector2();
 const tip = document.getElementById('tip');
-let hovered = null, down = null, cardOpen = false;
+let hovered = null, down = null, cardOpen = false, started = false, currentWord = null;
 
 function pick(x, y){
   mouse.set((x/innerWidth)*2-1, -(y/innerHeight)*2+1);
@@ -231,29 +288,60 @@ canvas.addEventListener('pointerup', e=>{
   if(h) openCard(h.userData.word, e.clientX, e.clientY);
 });
 
+// ===================================
+// MESSAGE CARD
+// ===================================
 const msg = document.getElementById('msg');
+
+function floatHearts(count, x, y, spread){
+  for(let i=0;i<count;i++){
+    const f = document.createElement('div');
+    f.className = 'heartfx';
+    f.textContent = ['💖','💗','💕','✨'][i%4];
+    f.style.left = (x + (Math.random()-0.5)*spread) + 'px';
+    f.style.top = y + 'px';
+    f.style.animationDelay = (i*0.06) + 's';
+    document.body.appendChild(f);
+    setTimeout(()=>f.remove(), 2600);
+  }
+}
+
 function openCard(w, x, y){
+  currentWord = w;
   document.getElementById('mEmoji').textContent = w.e;
   document.getElementById('mTitle').textContent = w.title;
   document.getElementById('mText').textContent = w.text;
   document.getElementById('closeBtn').textContent = w.btn || 'Close 💗';
   msg.classList.remove('hidden');
   cardOpen = true; tip.style.display = 'none';
-  for(let i=0;i<8;i++){
-    const f = document.createElement('div');
-    f.className = 'heartfx'; f.textContent = ['💖','💗','💕','✨'][i%4];
-    f.style.left = (x + (Math.random()-0.5)*120) + 'px'; f.style.top = y + 'px';
-    f.style.animationDelay = (i*0.08) + 's';
-    document.body.appendChild(f); setTimeout(()=>f.remove(), 2200);
-  }
+  floatHearts(8, x, y, 120);
 }
+
 function closeCard(){ msg.classList.add('hidden'); cardOpen = false; }
-document.getElementById('closeBtn').onclick = closeCard;
+
+document.getElementById('closeBtn').onclick = ()=>{
+  const wasFinal = currentWord && currentWord.final;
+  closeCard();
+
+  if(wasFinal){
+    // Galaxy morphs into one big heart
+    params.heartFormation = 1;
+    // Hearts float up across the screen
+    for(let i=0;i<24;i++){
+      floatHearts(1, Math.random()*innerWidth, innerHeight*(0.6 + Math.random()*0.3), 0);
+    }
+    // Then a "she said yes" card
+    setTimeout(()=>openCard(yesCard, innerWidth/2, innerHeight/2), 1400);
+  }
+};
+
 msg.addEventListener('click', e=>{ if(e.target===msg) closeCard(); });
 addEventListener('keydown', e=>{ if(e.key==='Escape') closeCard(); });
 
-// Animation
-let started = false, time = 0;
+// ===================================
+// ANIMATION
+// ===================================
+let time = 0;
 function animate(){
   requestAnimationFrame(animate);
   time += 0.01;
@@ -290,7 +378,9 @@ function animate(){
 }
 animate();
 
-// Background music from the supplied track, with a synth fallback if needed.
+// ===================================
+// MUSIC
+// ===================================
 let audioCtx, master, musicTimer, muted = false;
 const loveTrack = document.getElementById('loveTrack');
 const musicBtn = document.getElementById('musicBtn');
@@ -328,18 +418,12 @@ function startFallbackMusic(){
     musicBtn.onclick = ()=>{
       muted = !muted;
       if (master) master.gain.value = muted ? 0 : 0.18;
-      if (loveTrack) { loveTrack.muted = muted; loveTrack.volume = muted ? 0 : 0.4; }
       musicBtn.textContent = muted ? '🔇' : '🔊';
     };
   }catch(err){ console.warn('Audio unavailable', err); }
 }
 
 async function startMusic(){
-  if (!loveTrack) {
-    startFallbackMusic();
-    return;
-  }
-
   try {
     loveTrack.volume = 0.4;
     loveTrack.muted = false;
@@ -348,7 +432,6 @@ async function startMusic(){
     musicBtn.onclick = ()=>{
       muted = !muted;
       loveTrack.muted = muted;
-      loveTrack.volume = muted ? 0 : 0.4;
       musicBtn.textContent = muted ? '🔇' : '🔊';
     };
     musicBtn.textContent = '🔊';
